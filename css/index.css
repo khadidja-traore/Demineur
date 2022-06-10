@@ -1,0 +1,33 @@
+*{
+    margin: 0;
+    box-sizing: border-box;
+}
+h1{
+    
+    width: fit-content;
+    margin: 2% auto;
+}
+
+#board{
+    display: grid;
+    grid-template-columns: repeat(9, minmax(50px, 65px));
+    grid-template-rows: repeat(9, minmax(50px, 65px));
+    width: 80%;
+    margin: auto;
+    place-content: center;
+}
+
+.cell{
+    text-align: center;
+    border: 1px solid black;
+    padding-top: 20%;
+    background-color: grey;
+}
+
+.show{
+    background-color: rgb(190, 184, 184);
+}
+
+.bombe{
+    background-color: red;
+}
