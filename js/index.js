@@ -6,6 +6,7 @@ $(document).ready(function(){
     const columns = 9;
     const nbBombes = 10;
     var board = Array();
+    //tableau d'id 
     var boardID = Array();
 
     //Génération des coordonnées des bombes 
@@ -79,7 +80,6 @@ $(document).ready(function(){
                     board[i][j] = cpt;
                 }
                 
-
                 //ajout de l'elément dans le tableau 
                 boardID.push(board[i][j]);
             }
@@ -89,6 +89,7 @@ $(document).ready(function(){
 
     calculBombs();
     console.log(board);
+    console.log(boardID);
 
     function generateBoard(){
         var n = 0;
@@ -113,6 +114,7 @@ $(document).ready(function(){
         if (boardID[index] == 9){
             $(this).text('Bombe !');
             $(this).addClass("bombe");
+            alert("Perdu !")
             
         }else{
             $(this).text(boardID[index]);
