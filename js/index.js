@@ -6,8 +6,8 @@ $(document).ready(function(){
     const columns = 9;
     const nbBombes = 10;
     var board = Array();
-    //tableau d'id 
-    var boardID = Array();
+    var bombsList = Array();
+    var boardID = Array(); //tableau d'id 
 
     //Génération des coordonnées des bombes 
     function setBombsCoordinates(){
@@ -20,30 +20,28 @@ $(document).ready(function(){
             tab.push([a,b]);
         }
         console.log(tab);
-        
         return tab;
     }
-    setBombsCoordinates();
-
-    //Generation des cases des numéros 
-
-    //Generation du plateau de jeu
     
-    for (let i = 0; i < rows; i++){
-        board[i] = Array();
-        for(let j = 0; j < columns; j++){
-            board[i][j] = 0;
+    
+    //Generation du plateau de jeu
+    function setBoard(){
+        for (let i = 0; i < rows; i++){
+            board[i] = Array();
+            for(let j = 0; j < columns; j++){
+                board[i][j] = 0;
+            }
         }
     }
-
-    //Placement des bombes sur le plateau 
-    var bombsList = setBombsCoordinates();
+    
+    //Generation des cases des numéros 
+    function setBombs(){//Placement des bombes sur le plateau 
+    bombsList = setBombsCoordinates();
     bombsList.forEach(function(couple){
         board[couple[0]][couple[1]] = 9;
     })
-
-    console.log(bombsList);
-    console.log(board);
+}
+    
     function calculBombs(){
         var cpt = 0;
         for(let i = 0; i < rows; i++){
@@ -53,30 +51,30 @@ $(document).ready(function(){
                     //test pour les 3 cases en haut de la cellule (i,j)
                     if (i-1 < rows && i-1 >= 0){
                         if (j-1 < columns && j-1 >= 0 && board[i-1][j-1] == 9)
-                            cpt++;
+                        cpt++;
                         if (j < columns && j >= 0 && board[i-1][j] == 9)
-                            cpt++;
+                        cpt++;
                         if (j+1 < columns && j+1 >= 0 && board[i-1][j+1] == 9)
-                            cpt++;
+                        cpt++;
                     }
-
+                    
                     //test pour les cases à gauche et à droite de la cellule (i,j)
                     if (j-1 < columns && j-1 >= 0 && board[i][j-1] == 9)
-                            cpt++;
-                
+                    cpt++;
+                    
                     if (j+1 < columns && j+1 >= 0 && board[i][j+1] == 9)
-                            cpt++;
-
+                    cpt++;
+                    
                     //test pour les 3 cases en bas de la cellule (i,j)
                     if (i+1 < rows && i+1 >= 0){
                         if (j-1 < columns && j-1 >= 0 && board[i+1][j-1] == 9)
-                            cpt++;
+                        cpt++;
                         if (j < columns && j >= 0 && board[i+1][j] == 9)
-                            cpt++;
+                        cpt++;
                         if (j+1 < columns && j+1 >= 0 && board[i+1][j+1] == 9)
-                            cpt++;
+                        cpt++;
                     }
-
+                    
                     board[i][j] = cpt;
                 }
                 
@@ -84,26 +82,35 @@ $(document).ready(function(){
                 boardID.push(board[i][j]);
             }
         }
-
+        
     }
-
-    calculBombs();
-    console.log(board);
-    console.log(boardID);
-
+    
+    // console.log(board);
+    // console.log(boardID);
+    
     function generateBoard(){
+        setBombsCoordinates();
+        setBoard();
+        setBombs();
+        calculBombs();
         var n = 0;
         for(let i = 0; i < rows; i++){
             for(let j = 0; j < columns; j++){
                 var line = document.createElement("div");
                 line.setAttribute("id", n++);
                 line.classList.add("cell");
-                // line.innerText =  "C";
                 $("#board").append(line);
             }
         }
+
+        var reset = document.createElement("button");
+            reset.setAttribute("id", "reset");
+            reset.innerText = "Recommencer ";
+            $("#buttons-container").append(reset);
+
     }
 
+    
     generateBoard();
 
     var cptClick = 0;
@@ -112,9 +119,9 @@ $(document).ready(function(){
         var index = this.id;
         console.log(index);
         if (boardID[index] == 9){
-            $(this).text('Bombe !');
+            $(this).html('<i class="fa-solid fa-burst"></i>');
             $(this).addClass("bombe");
-            alert("Perdu !")
+            alert("Perdu !");
             
         }else{
             $(this).text(boardID[index]);
@@ -122,19 +129,14 @@ $(document).ready(function(){
         }
 
         if (cptClick == rows*columns-nbBombes){ // 
-            alert("vous avez gagné !")
+            alert("vous avez gagné !");
         }
+
     });
-
-
     
+    
+    $("#reset").click(function(){
+        location.reload();
+    })
 
-
-
-
-
-
-
-
-
-});
+})
